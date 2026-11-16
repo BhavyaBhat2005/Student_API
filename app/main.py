@@ -1,3 +1,6 @@
+#ch 5 
+#creating first fastapi server
+
 from fastapi import FastAPI #importing FastAPI class from FastAPI package
 app = FastAPI(title="Student API") #creating FastAPI application
 
@@ -8,3 +11,14 @@ def home(): #defines a function called home
         "message": "Welcome to Student API"
     }
 
+#ch 6
+#health check 
+
+@app.get("/health")
+
+def health_check():
+
+    return {
+        "status":"ok",
+        "service":"student-api"
+    }
