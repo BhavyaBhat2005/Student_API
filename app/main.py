@@ -1,24 +1,30 @@
-#ch 5 
-#creating first fastapi server
+#ch 10.1
 
 from fastapi import FastAPI #importing FastAPI class from FastAPI package
-app = FastAPI(title="Student API") #creating FastAPI application
+from pydantic import BaseModel, Field #helps validate data and check whether it matches a defined structure
 
-@app.get("/") #decorator telling when GET request arrives at the / path, call the function defined below
+app = FastAPI(title="Student API")
 
-def home(): #defines a function called home
-    return{ #returns a python dictionary 
-        "message": "Welcome to Student API"
-    }
+class StudentCreate(BaseModel):
+    name: str = Field(min_length=2, max_length=100)
+    division: str
 
-#ch 6
-#health check 
+@app.get("/")
+def home():
+    return {
+        "message":"Welcome to Student API"
+        }
 
 @app.get("/health")
-
 def health_check():
-
     return {
-        "status":"ok",
-        "service":"student-api"
+        "status": "ok",
+        "service": "student-api"
+        }
+
+@app.post("/students", status_code=201)
+def create_student(student: StudentCreate):
+    return {
+        "message": "Student received successfully",
+        "student" : student
     }
